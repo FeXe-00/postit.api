@@ -1,7 +1,7 @@
-const jwt = require('jsonwebtoken');
 const { User } = require('../models/auth/user.model');
 const { Role } = require('../models/auth/role.model');
 const { compareHash } = require('../utils/hash');
+const { generateToken, checkUserExistence } = require('../libs/auth');
 
 const signUp = async (req, res) => {
     const {
@@ -16,16 +16,6 @@ const signUp = async (req, res) => {
     } = req.body;
 
     try {
-        const userExists = await checkUserExistence(email);
-
-        if (!!userExists) {
-            res.status(409).send({
-                status: 409,
-                message: 'User already exists!',
-            });
-            return;
-        }
-
         const user = await User.create({
             firstName,
             lastName,
@@ -43,6 +33,8 @@ const signUp = async (req, res) => {
             dataValues: { roles: userRoles },
         } = userData;
 
+        
+        
         if (userRoles.length > 1) {
             for (let role of userRoles) {
                 const roles = await Role.findOne({ where: { role: role } });
@@ -90,12 +82,24 @@ const signIn = async (req, res) => {
 
     try {
         const user = await User.findOne({
+            attributes: [
+                'user_id',
+                'firstName',
+                'lastName',
+                'email',
+                'country',
+                'age',
+                'roles',
+                'password',
+            ],
             where: { email: email },
             include: {
                 model: Role,
                 as: 'users',
             },
         });
+
+        console.log('user', user)
 
         if (!user)
             return res.status(404).send({
@@ -118,7 +122,14 @@ const signIn = async (req, res) => {
             status: 200,
             message: 'User logged-in successfully!',
             token: generateToken({
-                user: user,
+                user: {
+                    user_id: user.user_id,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    email: user.email,
+                    country: user.country,
+                    roles: user.roles,
+                },
             }),
         });
     } catch (error) {
@@ -128,16 +139,6 @@ const signIn = async (req, res) => {
             message: 'Internal Server Error!',
         });
     }
-};
-
-const generateToken = (payload) => {
-    return jwt.sign(payload, process.env.JWT_SECRET, {
-        expiresIn: 86400, // 24 hours
-    });
-};
-
-const checkUserExistence = async (email) => {
-    return await User.findOne({ where: { email: email } });
 };
 
 module.exports = { signUp, signIn };
