@@ -1,6 +1,7 @@
+const jwt = require('jsonwebtoken');
 const { User } = require('../models/auth/user.model');
 const { Role } = require('../models/auth/role.model');
-const jwt = require('jsonwebtoken');
+const { compareHash } = require('../utils/hash');
 
 const signUp = async (req, res) => {
     const {
@@ -85,10 +86,48 @@ const signUp = async (req, res) => {
 };
 
 const signIn = async (req, res) => {
-    const { email, password } = req;
+    const { email, password } = req.body;
 
     try {
-    } catch (error) {}
+        const user = await User.findOne({
+            where: { email: email },
+            include: {
+                model: Role,
+                as: 'users',
+            },
+        });
+
+        if (!user)
+            return res.status(404).send({
+                status: 404,
+                message: 'User not found!',
+            });
+
+        const comparedPasswords = await compareHash(
+            password,
+            user.dataValues.password
+        );
+
+        if (!comparedPasswords)
+            return res.status(401).send({
+                status: 401,
+                message: 'Wrong user or password!',
+            });
+
+        return res.status(200).send({
+            status: 200,
+            message: 'User logged-in successfully!',
+            token: generateToken({
+                user: user,
+            }),
+        });
+    } catch (error) {
+        console.log('error', error);
+        res.status(500).send({
+            status: 500,
+            message: 'Internal Server Error!',
+        });
+    }
 };
 
 const generateToken = (payload) => {
@@ -100,7 +139,5 @@ const generateToken = (payload) => {
 const checkUserExistence = async (email) => {
     return await User.findOne({ where: { email: email } });
 };
-
-const loginUser = async () => {};
 
 module.exports = { signUp, signIn };

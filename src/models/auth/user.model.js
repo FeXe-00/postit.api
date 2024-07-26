@@ -3,6 +3,7 @@ const sequelize = require('../../database/database');
 const { hashValue } = require('../../utils/hash');
 const { UserRole } = require('./user_role.model');
 const { Role } = require('./role.model');
+const { Like } = require('../post/like.model');
 
 class User extends Model {}
 
@@ -74,18 +75,32 @@ User.init(
     }
 );
 
+/**
+ * User_Role many to many association
+ */
+
 User.belongsToMany(Role, {
-    as: 'User',
+    as: 'users',
     through: UserRole,
     foreignKey: 'user_id',
     otherKey: 'role_id',
 });
 
 Role.belongsToMany(User, {
-    as: 'Role',
+    as: 'roles',
     through: UserRole,
     foreignKey: 'role_id',
     otherKey: 'user_id',
+});
+
+/**
+ * User_Like one to many association
+ */
+
+User.hasMany(Like);
+
+Like.belongsTo(User, {
+    foreignKey: 'user_id',
 });
 
 module.exports = { User };

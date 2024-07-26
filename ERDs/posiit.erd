@@ -4,8 +4,8 @@
   "settings": {
     "width": 2000,
     "height": 2000,
-    "scrollTop": -650.8423,
-    "scrollLeft": -344.9728,
+    "scrollTop": -390.8284,
+    "scrollLeft": -165.583,
     "zoomLevel": 0.8,
     "show": 431,
     "database": 4,
@@ -112,14 +112,14 @@
         ],
         "ui": {
           "x": 1438.905,
-          "y": 739.2738,
+          "y": 742.6072,
           "zIndex": 107,
           "widthName": 60,
           "widthComment": 60,
           "color": ""
         },
         "meta": {
-          "updateAt": 1714941231885,
+          "updateAt": 1715739272827,
           "createAt": 1714099596789
         }
       },
@@ -192,8 +192,8 @@
         ],
         "seqColumnIds": [
           "NDQ_38k1xgKLdXWV74iWW",
-          "iUEd2tO7v0OwSbZj3caE6",
           "Ky_guTeO1tFfTmsgcU3Sv",
+          "iUEd2tO7v0OwSbZj3caE6",
           "3rn-yYYJz95XO-vYdik0X"
         ],
         "ui": {
@@ -205,7 +205,7 @@
           "color": ""
         },
         "meta": {
-          "updateAt": 1714941377530,
+          "updateAt": 1716433941100,
           "createAt": 1714927413031
         }
       },
@@ -589,7 +589,7 @@
         "tableId": "N9Z8nE680XbN4jUXMn6oO",
         "name": "publication_content",
         "comment": "",
-        "dataType": "",
+        "dataType": "TEXT",
         "default": "",
         "options": 0,
         "ui": {
@@ -600,7 +600,7 @@
           "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1714099824362,
+          "updateAt": 1715739302542,
           "createAt": 1714099800549
         }
       },
@@ -1006,7 +1006,7 @@
             "9QIVVRBZXpskJ_5PDW19z"
           ],
           "x": 1438.905,
-          "y": 815.2738,
+          "y": 818.6072,
           "direction": 1
         },
         "meta": {
@@ -1025,7 +1025,7 @@
             "IKUPRfRXB2GtwJmdxSUJR"
           ],
           "x": 1647.405,
-          "y": 891.2738,
+          "y": 894.6072,
           "direction": 8
         },
         "end": {
@@ -1361,7 +1361,8 @@
       1714099800548,
       -1,
       {
-        "name": 1714099824361
+        "name": 1714099824361,
+        "dataType": 1715739302542
       }
     ],
     "LUu8ivHJmFxhwKNgTYEiK": [

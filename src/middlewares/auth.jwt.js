@@ -1,7 +1,7 @@
 const { verify } = require('jsonwebtoken');
 const { User } = require('../models');
 
-const verifyToken = (req, res, next) => {
+const verifyToken = async (req, res, next) => {
     try {
         const bearerToken = req.headers['authorization'];
 
@@ -12,11 +12,14 @@ const verifyToken = (req, res, next) => {
         }
 
         const token = bearerToken.split(' ')[1];
-
         const decoded = verify(token, process.env.JWT_SECRET);
-        console.log('🚀 ~ verifyToken ~ decoded:', decoded);
+        const user = await User.findByPk(decoded.user.user_id);
 
-        // const user = User.findByPk()
+        if (user === null)
+            res.status(404).send({
+                status: 404,
+                message: 'User not found!',
+            });
 
         next();
     } catch (error) {
