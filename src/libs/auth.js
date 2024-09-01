@@ -6,8 +6,8 @@ const generateToken = (payload) => {
     });
 };
 
-const checkUserExistence = async (email) => {
-    return await User.findOne({ where: { email: email } });
-};
+// const checkUserExistence = async (username) => {
+//     return await User.findOne({ where: { username: username } });
+// };
 
-module.exports = { generateToken, checkUserExistence };
+module.exports = { generateToken };

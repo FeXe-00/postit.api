@@ -11,6 +11,7 @@ const sequelize = new Sequelize(`${DB_NAME}`, `${DB_USER}`, `${DB_PASSWORD}`, {
     dialect: 'postgres',
     port: `${DB_PORT}`,
     schema: 'postit',
+    logging: false,
 });
 
 module.exports = sequelize;
