@@ -2,6 +2,7 @@ const express = require('express');
 const logger = require('morgan');
 const dotenv = require('dotenv');
 const sequelize = require('./database/database');
+const helmet = require('helmet');
 const { apiRouter } = require('./routes/api.router');
 const { createRoles } = require('./libs/setupData');
 const { swaggerDocs: V1SwaggerDocs } = require('./routes/v1/swagger');
@@ -13,6 +14,7 @@ dotenv.config({ path: `./.env.${NODE_ENV}` });
 const app = express();
 app.use(logger('dev'));
 app.use(express.json());
+app.use(helmet());
 
 // ========= ROUTER =========
 apiRouter(app);
