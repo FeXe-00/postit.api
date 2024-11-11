@@ -1,24 +1,23 @@
-// const { User } = require('../models/User');
-// const { hasher, compareHash } = require('../utils/hash');
+const { User } = require('../models/auth/user.model');
 
-// const signUp = async (req, res) => {
-//     const { firstName, lastName, country, birthdate, email, password } =
-//         req.body;
+const getUsers = async () => {};
 
-//     await User.create({
-//         firstName,
-//         lastName,
-//         country,
-//         birthdate,
-//         email,
-//         password: password,
-//     });
-//     res.send({ status: 200, message: 'User created successfully!' });
-// };
+const getUser = async (user_id) => {
+    try {
+        const user = await User.findByPk(user_id);
 
-// const signIn = async (req, res) => {
-//     const users = await User.findAll();
-//     res.send(users);
-// };
+        if (!user) {
+            return 404;
+        }
 
-// module.exports = { signUp, signIn };
+        return user;
+    } catch (error) {
+        console.log('error', error);
+        res.status(500).send({
+            status: 500,
+            message: 'Internal Server Error!',
+        });
+    }
+};
+
+module.exports = { getUser };

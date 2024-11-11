@@ -16,7 +16,6 @@ const signUp = async (req, res) => {
     } = req.body;
 
     try {
-        // const userExixts = checkUserExistence(username);
         const userExists = await User.findOne({
             where: { username: username },
         });

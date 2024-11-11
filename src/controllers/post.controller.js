@@ -1,11 +1,37 @@
 const { Post } = require('../models/post/post.model');
 const { Like } = require('../models/post/like.model');
-const { User } = require('../models/auth/user.model');
+const { getUser } = require('./user.controller');
 
 const createPost = async (req, res) => {
-    const {} = req.body;
+    const { content, user_id } = req.body;
 
-    res.send(200);
+    try {
+        const user = await getUser(user_id);
+
+        if (user === 404) {
+            res.status(404).send({
+                status: 404,
+                message: 'User not found',
+            });
+            return;
+        }
+
+        const post = await Post.create({
+            content,
+        });
+
+        user.addPost(post.post_id);
+        res.status(200).send({
+            status: 200,
+            message: 'Post created sucessfully!',
+        });
+    } catch (error) {
+        console.log('error', error);
+        res.status(500).send({
+            status: 500,
+            message: 'Internal Server Error!',
+        });
+    }
 };
 
 module.exports = { createPost };

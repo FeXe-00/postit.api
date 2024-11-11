@@ -12,12 +12,9 @@ Post.init(
             autoIncrement: true,
             allowNull: false,
         },
-        // publication_date: {
-        //     type: DataTypes.DATE,
-        //     allowNull: false,
-        // },
-        publictaion_content: {
-            post_text: DataTypes.TEXT,
+
+        content: {
+            type: DataTypes.TEXT,
             allowNull: false,
         },
     },

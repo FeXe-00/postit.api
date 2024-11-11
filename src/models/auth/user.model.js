@@ -98,7 +98,7 @@ Role.belongsToMany(User, {
  * User_Post one to many association
  */
 
-User.hasMany(Post);
+User.hasMany(Post, { foreignKey: 'user_id' });
 
 Post.belongsTo(User, {
     foreignKey: 'user_id',
