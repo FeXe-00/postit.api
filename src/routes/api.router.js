@@ -1,4 +1,3 @@
-const express = require('express');
 const { authRoute, postRotes } = require('./v1');
 
 const apiRouter = (app) => {

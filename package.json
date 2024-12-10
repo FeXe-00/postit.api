@@ -6,7 +6,8 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development nodemon ./src/index.js",
     "start:development": "env-cmd -f .env.development nodemon ./src/index.js",
-    "start:local": "env-cmd -f .env.local nodemon ./src/index.js"
+    "start:local": "env-cmd -f .env.local nodemon --max-old-space-size=4096 ./src/index.js",
+    "find-circular-deps": "madge . -c"
   },
   "keywords": [],
   "author": "",
@@ -19,12 +20,14 @@
     "express": "^4.19.2",
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
+    "method-override": "^3.0.0",
     "nodemon": "^3.1.0",
     "pg": "^8.11.5",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.3"
   },
   "devDependencies": {
+    "madge": "^8.0.0",
     "morgan": "^1.10.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0"

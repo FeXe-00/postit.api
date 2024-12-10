@@ -2,6 +2,7 @@ const { User } = require('../models/auth/user.model');
 const { Role } = require('../models/auth/role.model');
 const { compareHash } = require('../utils/hash');
 const { generateToken } = require('../libs/auth');
+const { statusResponse } = require('../helpers/response.helper');
 
 const signUp = async (req, res) => {
     const {
@@ -77,23 +78,25 @@ const signUp = async (req, res) => {
             await user.addUser(role?.dataValues?.role_id);
         }
 
-        res.status(201).send({
+        statusResponse({
             status: 201,
             message: 'User created successfully!',
-            token: generateToken({
-                user_id: user.user_id,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.email,
-                username: user.username,
-                country: user.country,
-            }),
+            data: {
+                token: generateToken({
+                    user_id: user.user_id,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    email: user.email,
+                    username: user.username,
+                    country: user.country,
+                }),
+            },
         });
     } catch (error) {
-        console.log('error', error);
-        res.status(500).send({
+        statusResponse({
             status: 500,
             message: 'Internal Server Error!',
+            error: error,
         });
     }
 };
@@ -120,22 +123,23 @@ const signIn = async (req, res) => {
             },
         });
 
-        if (!user)
-            return res.status(404).send({
-                status: 404,
-                message: 'User not found!',
-            });
+        if (!user) {
+            statusResponse({ status: 404, message: 'User not found!' });
+            return;
+        }
 
         const comparedPasswords = await compareHash(
             password,
             user.dataValues.password
         );
 
-        if (!comparedPasswords)
-            return res.status(401).send({
+        if (!comparedPasswords) {
+            statusResponse({
                 status: 401,
                 message: 'Wrong user or password!',
             });
+            return;
+        }
 
         return res.status(200).send({
             status: 200,
@@ -152,12 +156,16 @@ const signIn = async (req, res) => {
             }),
         });
     } catch (error) {
-        console.log('error', error);
-        res.status(500).send({
+        statusResponse({
             status: 500,
             message: 'Internal Server Error!',
+            error: error,
         });
     }
+};
+
+const signOut = async (req, res) => {
+    const { user_id } = req.body;
 };
 
 module.exports = { signUp, signIn };

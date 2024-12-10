@@ -6,8 +6,4 @@ const generateToken = (payload) => {
     });
 };
 
-// const checkUserExistence = async (username) => {
-//     return await User.findOne({ where: { username: username } });
-// };
-
 module.exports = { generateToken };
