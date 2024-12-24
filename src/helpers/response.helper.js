@@ -1,6 +1,6 @@
-function statusResponse({ status, message, data = null, error = null }) {
+function statusResponse({ res, status, message, data = null, error = null }) {
     return res.status(status).send({
-        status: status,
+        status: status || 500,
         message: message,
         data: data,
         error: error,

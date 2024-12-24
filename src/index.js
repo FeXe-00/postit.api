@@ -1,6 +1,7 @@
 const express = require('express');
 const logger = require('morgan');
 const dotenv = require('dotenv');
+const cors = require('cors');
 const sequelize = require('./database/database');
 const helmet = require('helmet');
 const methodOverride = require('method-override');
@@ -8,7 +9,6 @@ const { apiRouter } = require('./routes/api.router');
 const { createRoles, createThemes } = require('./libs/setupData');
 const { swaggerDocs: V1SwaggerDocs } = require('./routes/v1/swagger');
 const { ExceptionHandler } = require('./helpers/exceptions.handler');
-const e = require('express');
 
 // ========= MODELS INJECTION =========
 require('./models');
@@ -22,6 +22,7 @@ const app = express();
 app.use(logger('dev'));
 app.use(express.json());
 app.use(helmet());
+app.use(cors({ origin: '*' })); // TODO: CREATE WHITELIST
 app.use(methodOverride());
 
 // ========= ROUTER =========

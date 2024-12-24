@@ -1,4 +1,4 @@
-const { authRoute, postRotes } = require('./v1');
+const { authRoute, postRotes, userRotes } = require('./v1');
 
 const apiRouter = (app) => {
     app.get('/api/v1', (req, res) => {
@@ -7,6 +7,7 @@ const apiRouter = (app) => {
 
     app.use('/api/v1/auth', authRoute);
     app.use('/api/v1/post', postRotes);
+    app.use('/api/v1/user', userRotes);
 };
 
 module.exports = { apiRouter };

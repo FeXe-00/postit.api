@@ -79,8 +79,10 @@ const signUp = async (req, res) => {
         }
 
         statusResponse({
+            res,
             status: 201,
             message: 'User created successfully!',
+            user_id: user.user_id,
             data: {
                 token: generateToken({
                     user_id: user.user_id,
@@ -94,6 +96,7 @@ const signUp = async (req, res) => {
         });
     } catch (error) {
         statusResponse({
+            res,
             status: 500,
             message: 'Internal Server Error!',
             error: error,
@@ -124,7 +127,7 @@ const signIn = async (req, res) => {
         });
 
         if (!user) {
-            statusResponse({ status: 404, message: 'User not found!' });
+            statusResponse({ res, status: 404, message: 'User not found!' });
             return;
         }
 
@@ -135,6 +138,7 @@ const signIn = async (req, res) => {
 
         if (!comparedPasswords) {
             statusResponse({
+                res,
                 status: 401,
                 message: 'Wrong user or password!',
             });
@@ -144,6 +148,7 @@ const signIn = async (req, res) => {
         return res.status(200).send({
             status: 200,
             message: 'User logged-in successfully!',
+            user_id: user.user_id,
             token: generateToken({
                 user: {
                     user_id: user.user_id,
@@ -156,7 +161,9 @@ const signIn = async (req, res) => {
             }),
         });
     } catch (error) {
+        console.log('🚀 ~ signIn ~ error:', error);
         statusResponse({
+            res,
             status: 500,
             message: 'Internal Server Error!',
             error: error,

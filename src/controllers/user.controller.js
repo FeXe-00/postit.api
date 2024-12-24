@@ -1,21 +1,42 @@
+const { statusResponse } = require('../helpers/response.helper');
 const { User } = require('../models/auth/user.model');
 
 const getUsers = async () => {};
 
-const getUser = async (user_id) => {
+const getUser = async (req, res) => {
+    const { user_id } = req.body;
+
     try {
         const user = await User.findByPk(user_id);
 
         if (!user) {
-            return 404;
+            statusResponse({
+                res,
+                status: 404,
+                message: 'User not found!',
+            });
         }
 
-        return user;
+        statusResponse({
+            res,
+            status: 200,
+            message: 'User found!',
+            data: {
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                username: user.username,
+                country: user.country,
+                birthday: user.birthday,
+                createdAt: user.createdAt,
+            },
+        });
     } catch (error) {
-        console.log('error', error);
-        res.status(500).send({
+        statusResponse({
+            res,
             status: 500,
             message: 'Internal Server Error!',
+            error: error,
         });
     }
 };
